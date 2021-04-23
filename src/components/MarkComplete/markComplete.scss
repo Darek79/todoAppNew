@@ -1,0 +1,12 @@
+.todo_checkMark {
+  height: 100%;
+  display: flex;
+  padding: 0 5px;
+  .todo_checkMark_item {
+    width: 50px;
+    margin: auto;
+  }
+  .todo_checkMark_item:hover {
+    cursor: pointer;
+  }
+}

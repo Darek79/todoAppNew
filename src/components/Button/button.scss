@@ -1,0 +1,31 @@
+.todo_btn {
+  min-width: 100px;
+  padding: 3px 0;
+  height: 100%;
+  background: #202020;
+  color: #ffdf6c;
+  border: 1px solid #ffdf6c;
+  outline: none;
+}
+.todo_btn:hover {
+  cursor: pointer;
+}
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+
+.ripple:hover {
+  background: #212529
+    radial-gradient(
+      circle,
+      transparent 1%,
+      #212529 1%
+    )
+    center/15000%;
+}
+.ripple:active {
+  background-color: #fff8f0;
+  background-size: 100%;
+  transition: background 0s;
+}

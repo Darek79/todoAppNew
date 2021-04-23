@@ -1,0 +1,30 @@
+.todo_wrapper {
+  height: 90px;
+  min-height: 90px;
+  // border: 1px solid green;
+  display: flex;
+  border: 1px solid #ffdf6c;
+  background: #707070;
+
+  .todo_item_wrapper {
+    // border: 1px solid blue;
+
+    background: white;
+
+    & > textarea {
+      height: 100%;
+      padding: 5px;
+      font-family: Roboto;
+      outline: none;
+      resize: none;
+      border: none;
+      // background: #e0e1dd;
+      font-size: 20px;
+    }
+  }
+  .todo_btn_group {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}

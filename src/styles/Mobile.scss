@@ -1,0 +1,12 @@
+@media only screen and (min-width: 320px) and (max-width: 765px) {
+  body {
+    background-color: #fff8f0;
+  }
+  .App {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    min-height: 100vh;
+    height: auto;
+  }
+}

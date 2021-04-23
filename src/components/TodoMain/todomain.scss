@@ -1,0 +1,13 @@
+.todo_main {
+  grid-column: 2;
+  justify-self: center;
+  align-self: start;
+  width: 60%;
+  // height: 80%;
+  // border: 1px solid blue;
+  .todo_main_item_wrapper {
+    display: grid;
+    row-gap: 5px;
+    justify-self: center;
+  }
+}
