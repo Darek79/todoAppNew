@@ -1,45 +1,58 @@
-import {connect} from "react-redux";
+import {
+  useDispatch,
+  useSelector,
+} from "react-redux";
 import {useEffect} from "react";
 import {
-  todo_add,
+  startedAddTodo,
   fetchFilesDB,
-  todo_init,
+  okAddTodo,
+  failureAddTodo,
 } from "./../../Redux/Actions/appActions";
 import TodoItem from "./../TodoItem/TodoItem";
 import AddItem from "./../AddItem/AddItem";
 import "./todomain.scss";
-const TodoMain = ({
-  todos,
-  todo_init,
-  fetchFilesDB,
-}) => {
+export default function TodoMain() {
+  const todos = useSelector(
+    (state) => state.todos
+  );
+  const loading = useSelector(
+    (state) => state.loading
+  );
+  const dispatch = useDispatch();
   useEffect(() => {
-    fetchFilesDB(todo_init);
-  }, []);
+    console.log("dispatch");
+    fetchFilesDB(
+      startedAddTodo,
+      okAddTodo,
+      failureAddTodo
+    );
+  }, [dispatch]);
   return (
     <section className='todo_main'>
       <AddItem />
       {console.log(todos, "main")}
       <div className='todo_main_item_wrapper'>
-        {todos.length > 0 &&
+        {loading ? (
           todos.map((el, i) => (
             <TodoItem
               key={el.id}
               id={el.id}
               txt={el.task}
             />
-          ))}
+          ))
+        ) : (
+          <div>loading</div>
+        )}
       </div>
     </section>
   );
-};
+}
 
-const reduxStore = ({todoReducer}) => ({
-  todos: todoReducer,
-});
+// const reduxStore = ({todoReducer}) => ({
+//   todos: todoReducer,
+// });
 
-export default connect(reduxStore, {
-  todo_add,
-  todo_init,
-  fetchFilesDB,
-})(TodoMain);
+// export default connect(reduxStore, {
+//   fetchFilesDB,
+// })(TodoMain);

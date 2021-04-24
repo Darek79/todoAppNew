@@ -11,14 +11,14 @@ import "./todoItem.scss";
 import {connect} from "react-redux";
 import {Button} from "./../Button/Button";
 import {MarkComplete} from "./../MarkComplete/MarkComplete";
-const TodoItem = ({
+export default function TodoItem({
   txt,
   ind,
   id,
   isAllowed = true,
   rows = 50,
   placeholder = "",
-}) => {
+}) {
   const textValueRef = useRef(txt);
   const defaultTxtRef = useRef(txt);
   const indexRef = useRef(ind);
@@ -55,9 +55,8 @@ const TodoItem = ({
     // );
   }
   function btnSaveHandler(e) {
-    
     console.log(e.target.getAttribute("data-id"));
-    setSave(true)
+    setSave(true);
     setDisabled((p) => !p);
   }
   function cancelHandler() {
@@ -112,8 +111,4 @@ const TodoItem = ({
       ) : undefined}
     </section>
   );
-};
-
-const reduxStore = ({}) => ({});
-
-export default connect(null, null)(TodoItem);
+}

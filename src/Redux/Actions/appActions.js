@@ -1,26 +1,48 @@
-export const ADD_TODO = "ADD_TODO";
-export const INIT_TODO = "INIT_TODO";
+export const ADD_TODO_STARTED =
+  "ADD_TODO_STARTED";
+export const ADD_TODO_OK = "ADD_TODO_OK";
+export const ADD_TODO_FAILURE =
+  "ADD_TODO_FAILURE";
 export const REMOVE_TODO = "REMOVE_TODO";
 export const UPDATE_TODO = "UPDATE_TODO";
 export const COMPLETE_TODO = "COMPLETE_TODO";
 export const RESET_TODO = "RESET_TODOS";
 
-export const todo_add = (payload) => ({
-  type: ADD_TODO,
+export const startedAddTodo = () => ({
+  type: ADD_TODO_STARTED,
+});
+export const okAddTodo = (payload) => ({
+  type: ADD_TODO_OK,
+  loading: false,
   payload,
 });
-export const todo_init = (payload) => ({
-  type: INIT_TODO,
-  payload,
-});
-export const todo_update = (payload) => ({
-  type: UPDATE_TODO,
-  payload,
+export const failureAddTodo = (error) => ({
+  type: ADD_TODO_FAILURE,
+  loading: false,
+  error,
 });
 
-export const fetchFilesDB = (fnOK, FNERR) => {
+export const todoRemove = (id) => ({
+  type: REMOVE_TODO,
+  loading: false,
+  id,
+});
+
+export const todoUpdate = ({id, text}) => ({
+  type: UPDATE_TODO,
+  id,
+  text,
+});
+export const fetchFilesDB = (
+  fnStart,
+  fnOK,
+  FNERR,
+  dispatch
+) => {
   return async () => {
     try {
+      console.log(dispatch);
+      dispatch(fnStart());
       const response = await fetch(
         "https://react.massivepixel.io/api/kloda.dariusz",
         {
@@ -31,10 +53,10 @@ export const fetchFilesDB = (fnOK, FNERR) => {
       const parsed = await response.text();
       const checked = JSON.parse(parsed);
       console.log(checked.data);
-      fnOK(checked.data);
+      dispatch(fnOK(checked.data));
     } catch (error) {
       if (error) console.log(error);
-      FNERR();
+      dispatch(FNERR(error.message));
     }
   };
 };

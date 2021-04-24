@@ -1,5 +1,7 @@
 import {
-  ADD_TODO,
+  ADD_TODO_STARTED,
+  ADD_TODO_OK,
+  ADD_TODO_FAILURE,
   REMOVE_TODO,
   UPDATE_TODO,
   COMPLETE_TODO,
@@ -7,22 +9,36 @@ import {
   INIT_TODO,
 } from "./../Actions/appActions";
 
-const init = {todos: [], update: false};
+const init = {
+  todos: [],
+  loading: false,
+  error: null,
+};
 
 export default function todoReducer(
   state = init,
   action
 ) {
   switch (action.type) {
-    case INIT_TODO:
-      return action.payload;
-    case ADD_TODO:
-      console.log(action);
+    case ADD_TODO_STARTED:
+      return {...state, loading: true};
+    case ADD_TODO_OK:
       return {
-        todos: [action.payload, ...state.todos],
+        ...state,
+        loading: true,
+        todo: [...state.todo, action.payload],
+      };
+    case ADD_TODO_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
       };
     case REMOVE_TODO:
-      return [];
+      return {
+        ...state,
+        loading: true,
+      };
     case UPDATE_TODO:
       return {...state, update: action.update};
     case COMPLETE_TODO:

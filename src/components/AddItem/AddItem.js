@@ -2,30 +2,25 @@ import plus from "./../../Assets/Plus.svg";
 import {connect} from "react-redux";
 import {useRef, useState, useEffect} from "react";
 import {Button} from "./../Button/Button";
-import {
-  todo_add,
-  sendFilesToDB,
-} from "./../../Redux/Actions/appActions";
+import {sendFilesToDB} from "./../../Redux/Actions/appActions";
 import {v4} from "uuid";
 import "./additem.scss";
-const AddItem = ({todo_add, sendFilesToDB}) => {
+export default function AddItem({sendFilesToDB}) {
   const textValueRef = useRef("");
   const [plusClick, setPlusClick] = useState(
     false
   );
   const [sendData, setSendData] = useState(false);
 
-  useEffect(() => {
-    if (sendData) {
-      sendFilesToDB(
-        todo_add,
-        setPlusClick,
-        [textValueRef.current.value]
-      );
-      textValueRef.current.value = "";
-      setSendData(false);
-    }
-  }, [sendData]);
+  // useEffect(() => {
+  //   if (sendData) {
+  //     sendFilesToDB(todo_add, setPlusClick, [
+  //       textValueRef.current.value,
+  //     ]);
+  //     textValueRef.current.value = "";
+  //     setSendData(false);
+  //   }
+  // }, [sendData]);
   function clickOnPlus() {
     setPlusClick(true);
   }
@@ -72,9 +67,4 @@ const AddItem = ({todo_add, sendFilesToDB}) => {
       />
     </section>
   );
-};
-
-export default connect(null, {
-  todo_add,
-  sendFilesToDB,
-})(AddItem);
+}
