@@ -23,10 +23,11 @@ export default function todoReducer(
     case ADD_TODO_STARTED:
       return {...state, loading: true};
     case ADD_TODO_OK:
+      console.log(action.payload, "pay");
       return {
         ...state,
         loading: true,
-        todo: [...state.todo, action.payload],
+        todos: [...action.payload],
       };
     case ADD_TODO_FAILURE:
       return {

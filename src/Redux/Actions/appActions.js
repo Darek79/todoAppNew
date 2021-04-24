@@ -36,10 +36,9 @@ export const todoUpdate = ({id, text}) => ({
 export const fetchFilesDB = (
   fnStart,
   fnOK,
-  FNERR,
-  dispatch
+  FNERR
 ) => {
-  return async () => {
+  return async (dispatch) => {
     try {
       console.log(dispatch);
       dispatch(fnStart());
@@ -66,7 +65,7 @@ export const sendFilesToDB = (
   FNERR,
   data
 ) => {
-  return async () => {
+  return async (dispatch, getState, extra) => {
     try {
       var formdata = new FormData();
       formdata.append("task", data[0]);
@@ -84,7 +83,7 @@ export const sendFilesToDB = (
       );
       const parsed = await response.text();
       const checked = JSON.parse(parsed);
-      // fnOK(checked.data);
+      dispatch(fnOK(checked.data));
     } catch (error) {
       if (error) console.log(error);
       // FNERR();
