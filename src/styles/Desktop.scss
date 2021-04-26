@@ -1,12 +1,83 @@
 @media only screen and (min-width: 1224px) {
   body {
-    background-color: #fff8f0;
+    overflow-x: hidden;
   }
   .App {
     display: grid;
-    grid-template-columns: 0.5fr 2fr 0.5fr;
+    grid-template-columns: 0.25fr auto 0.25fr;
     grid-template-rows: 1fr;
     min-height: 100vh;
+    width: 100vw;
     height: auto;
+
+    .todo_main {
+      grid-column: 2/3;
+      justify-self: center;
+      align-self: start;
+      width: 50vw;
+
+      .todo_addItem {
+        display: grid;
+        grid-template-columns: 50px 80% 100px;
+        height: 100px;
+        width: 100%;
+        align-items: center;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        border: 2px solid #ffdf6c;
+        align-items: center;
+        padding: 0 5px;
+        .todo_addItem_plus {
+          grid-column: 1;
+        }
+        .todo_addItem_text {
+          grid-column: 2;
+          width: 100%;
+        }
+        .todo_btn {
+          width: 100%;
+          min-width: 10%;
+        }
+      }
+
+      .todo_main_item_wrapper {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 100vw;
+        row-gap: 5px;
+        justify-self: center;
+
+        .todo_wrapper {
+          height: 90px;
+          min-height: 90px;
+          width: 50%;
+          display: flex;
+          border: 1px solid #ffdf6c;
+          background: #707070;
+
+          .todo_item_wrapper {
+            width: 100%;
+            & > textarea {
+              width: 100%;
+            }
+          }
+          .todo_btn {
+            padding: 0 10px;
+          }
+        }
+      }
+    }
+    .appError {
+      width: 100vw;
+      height: calc(100vh - 50px);
+      z-index: 666;
+      background: #202020;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      margin-top: 50px;
+      grid-column: 2/3;
+      justify-self: center;
+    }
   }
 }

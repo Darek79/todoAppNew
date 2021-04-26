@@ -1,38 +1,26 @@
 import plus from "./../../Assets/Plus.svg";
-import {connect} from "react-redux";
-import {useRef, useState, useEffect} from "react";
+
+import {useRef, useState} from "react";
 import {Button} from "./../Button/Button";
-import {sendFilesToDB} from "./../../Redux/Actions/appActions";
-import {v4} from "uuid";
+import {useDispatch} from "react-redux";
+import {saveTodo} from "./../../Redux/Actions/appActions";
 import "./additem.scss";
-export default function AddItem({sendFilesToDB}) {
+export default function AddItem() {
+  const dispatch = useDispatch();
   const textValueRef = useRef("");
   const [plusClick, setPlusClick] = useState(
     false
   );
-  const [sendData, setSendData] = useState(false);
 
-  // useEffect(() => {
-  //   if (sendData) {
-  //     sendFilesToDB(todo_add, setPlusClick, [
-  //       textValueRef.current.value,
-  //     ]);
-  //     textValueRef.current.value = "";
-  //     setSendData(false);
-  //   }
-  // }, [sendData]);
   function clickOnPlus() {
     setPlusClick(true);
   }
   function captureClick() {
-    setSendData(true);
-    console.log(textValueRef.current.value);
-    // todo_add({
-    //   task: textValueRef.current.value,
-    //   is_completed: 0,
-    // });
-
-    setPlusClick(false);
+    dispatch(
+      saveTodo(textValueRef.current.value)
+    );
+    textValueRef.current.value = "";
+    setPlusClick((p) => !p);
   }
   return (
     <section className='todo_addItem'>

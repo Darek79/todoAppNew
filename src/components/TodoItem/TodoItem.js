@@ -1,114 +1,104 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
+import React, {useRef, useState} from "react";
 import "./todoItem.scss";
-// type CompProps = {
-//   txt?: string;
-// };
-import {connect} from "react-redux";
 import {Button} from "./../Button/Button";
 import {MarkComplete} from "./../MarkComplete/MarkComplete";
+import {useDispatch} from "react-redux";
+import {
+  deleteTodo,
+  updateTodo,
+} from "./../../Redux/Actions/appActions";
 export default function TodoItem({
   txt,
   ind,
   id,
+  state,
   isAllowed = true,
   rows = 50,
   placeholder = "",
 }) {
+  const dispatch = useDispatch();
   const textValueRef = useRef(txt);
-  const defaultTxtRef = useRef(txt);
-  const indexRef = useRef(ind);
-  const [save, setSave] = useState(false);
-  const [updated, setUpdated] = useState(false);
-  const [areaTxt, setAreaTxt] = useState(txt);
   const [isDisabled, setDisabled] = useState(
     true
   );
 
-  useEffect(() => {
-    if (updated) {
-      setDisabled(true);
-      console.log(defaultTxtRef.current);
-    }
-  }, [updated]);
-  useEffect(() => {
-    console.log("clicked");
-  }, [areaTxt]);
-
-  function changeHandler(e) {
-    setAreaTxt(() => e.target.value);
-  }
-
-  //
-  // when user clicks on field we unlock it
-  //
   function changeDisabled() {
-    console.log("turn on");
     setDisabled(false);
-    // console.log(
-    //   textValueRef.current.scrollHeight,
-    //   defaultboxSizeRef.current
-    // );
   }
-  function btnSaveHandler(e) {
-    console.log(e.target.getAttribute("data-id"));
-    setSave(true);
+  function btnSaveHandler() {
+    dispatch(
+      updateTodo([
+        id,
+        textValueRef.current.value,
+        state,
+      ])
+    );
     setDisabled((p) => !p);
   }
   function cancelHandler() {
-    setAreaTxt(() => defaultTxtRef.current);
     setDisabled((p) => !p);
-    console.log("cancel");
+  }
+  function deleteHandler() {
+    dispatch(deleteTodo(id));
   }
   return (
     <section className='todo_wrapper'>
       {isAllowed ? (
-        <MarkComplete indexRef={indexRef} />
+        <MarkComplete
+          id={id}
+          state={state}
+          txt={txt}
+        />
       ) : undefined}
 
       <div
         className='todo_item_wrapper'
         onClick={changeDisabled}>
+        {isDisabled}
         <textarea
+          style={{
+            textDecoration: `${
+              state ? "line-through" : ""
+            }`,
+          }}
           placeholder={placeholder}
           data-index={ind}
           data-id={id}
-          disabled={isDisabled}
+          disabled={state ? true : isDisabled}
           autoComplete='off'
           autoCorrect='off'
           autoCapitalize='off'
           spellCheck={false}
-          onChange={changeHandler}
           rows={rows}
           cols={50}
           ref={textValueRef}
-          value={areaTxt}
-        />
+          defaultValue={txt}></textarea>
       </div>
-      {!isDisabled && isAllowed ? (
-        <div className='todo_btn_group'>
+
+      <div className='todo_btn_group'>
+        {!isDisabled && isAllowed && !state ? (
           <Button
             txt='SAVE'
             fnClick={btnSaveHandler}
             cn='todo_btn'
-            id={id}
           />
+        ) : undefined}
+        {!isDisabled && isAllowed ? (
           <Button
             txt='DELETE'
             cn='todo_btn'
-            id={id}
+            fnClick={deleteHandler}
           />
+        ) : undefined}
+
+        {!isDisabled && isAllowed ? (
           <Button
             txt='CANCEL'
             fnClick={cancelHandler}
             cn='todo_btn'
           />
-        </div>
-      ) : undefined}
+        ) : undefined}
+      </div>
     </section>
   );
 }

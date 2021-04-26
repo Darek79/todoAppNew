@@ -1,0 +1,42 @@
+.conn_wrapper_closed {
+  position: fixed;
+  width: 100vw;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 350ms
+    cubic-bezier(0.075, 0.82, 0.165, 1);
+  transform: translateY(-100px);
+  opacity: 0;
+  background: #212529;
+  font-size: 20px;
+  color: #fff8f0;
+}
+.conn_wrapper_open {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+
+  transition: all 350ms
+    cubic-bezier(0.075, 0.82, 0.165, 1);
+  transform: translateY(0px);
+  background: rgba(33, 37, 41, 0.3);
+  font-size: 25px;
+
+  letter-spacing: 1.5px;
+  z-index: 666;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  .conn_error {
+    color: #fff8f0;
+    width: 500px;
+    height: 100px;
+    text-align: center;
+    background: #212529;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

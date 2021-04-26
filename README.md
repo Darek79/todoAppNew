@@ -1,6 +1,13 @@
-# Getting Started with Create React App
+# Getting started with my TodoApp
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Installing the App
+
+In order to Install the App, please pull it from the repository.
+Then please install the dependencies with npm i.
+
+Once the dependencies are installed you have following options.
 
 ## Available Scripts
 
@@ -29,42 +36,34 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## App description
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- in Assets you will find imgs, svgs.
+- in Components you will find Folders with the subcomponents, each folder contains
+  a js and a sass file.
+- in Redux you will find the store, actions and the slice reducer.
+  For the app i used the modern approach. All actions have 3 stages.
+  Pending, Fullfilled and Rejected to catch the error.
+- In Styles you will find sass files in order to make the app responsive plus a reset file
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### App flow
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Once the app mounts i fetch data from db, then i only add data
+when the server confirms with 200, otherwise the AppError component will catch the error. So each actions only happens when the server responds with 200.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+User will see a spinner when an action occurs.
 
-## Learn More
+User can add todos by clicking in the todo field, then save it by clicking the SAVE button.
+User can delete the todo by clicking the DELETE button.
+Use can cancel the action by clicking the CANCEL button.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To complete a todo click on the left checkmark, then it changes to a X and the text is crossed.
+When todo is completed, user can only delete the todo when he clicks into the field.
+By hitting the X button you uncomplete it.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### App Errors
 
-### Code Splitting
+There a are 2 Error catchers.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. When Server responds with an Error, user can then Reload the page.
+2. When User loses internet connection an overlay appears and the user cant do anything untill he connects with the internet

@@ -1,0 +1,16 @@
+.appError_group {
+  border: 2px solid #ffdf6c;
+  min-width: 30vw;
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #707070;
+  font-size: 20px;
+  color: white;
+  .appError_btn {
+    padding: 5px 10px !important;
+    margin-top: 30px;
+  }
+}

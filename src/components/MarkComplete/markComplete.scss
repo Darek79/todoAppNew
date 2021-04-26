@@ -9,4 +9,7 @@
   .todo_checkMark_item:hover {
     cursor: pointer;
   }
+  .todo_checkMark_done {
+    transform: rotate(45deg);
+  }
 }

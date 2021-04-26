@@ -1,92 +1,128 @@
-export const ADD_TODO_STARTED =
-  "ADD_TODO_STARTED";
-export const ADD_TODO_OK = "ADD_TODO_OK";
-export const ADD_TODO_FAILURE =
-  "ADD_TODO_FAILURE";
-export const REMOVE_TODO = "REMOVE_TODO";
-export const UPDATE_TODO = "UPDATE_TODO";
-export const COMPLETE_TODO = "COMPLETE_TODO";
-export const RESET_TODO = "RESET_TODOS";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 
-export const startedAddTodo = () => ({
-  type: ADD_TODO_STARTED,
-});
-export const okAddTodo = (payload) => ({
-  type: ADD_TODO_OK,
-  loading: false,
-  payload,
-});
-export const failureAddTodo = (error) => ({
-  type: ADD_TODO_FAILURE,
-  loading: false,
-  error,
-});
-
-export const todoRemove = (id) => ({
-  type: REMOVE_TODO,
-  loading: false,
-  id,
-});
-
-export const todoUpdate = ({id, text}) => ({
-  type: UPDATE_TODO,
-  id,
-  text,
-});
-export const fetchFilesDB = (
-  fnStart,
-  fnOK,
-  FNERR
-) => {
-  return async (dispatch) => {
-    try {
-      console.log(dispatch);
-      dispatch(fnStart());
-      const response = await fetch(
-        "https://react.massivepixel.io/api/kloda.dariusz",
-        {
-          method: "GET",
-          redirect: "follow",
-        }
-      );
-      const parsed = await response.text();
-      const checked = JSON.parse(parsed);
-      console.log(checked.data);
-      dispatch(fnOK(checked.data));
-    } catch (error) {
-      if (error) console.log(error);
-      dispatch(FNERR(error.message));
-    }
-  };
-};
-
-export const sendFilesToDB = (
-  fnOK,
-  FNERR,
-  data
-) => {
-  return async (dispatch, getState, extra) => {
-    try {
-      var formdata = new FormData();
-      formdata.append("task", data[0]);
-      formdata.append("is_completed", "0");
-
-      var requestOptions = {
-        method: "POST",
-        body: formdata,
+export const fetchTodos = createAsyncThunk(
+  "todos/fetchTodos",
+  async (_arg, {rejectWithValue}) => {
+    const response = await fetch(
+      "https://react.massivepixel.io/api/kloda.dariusz",
+      {
+        method: "GET",
         redirect: "follow",
-      };
-
-      const response = await fetch(
-        "https://react.massivepixel.io/api/kloda.dariusz",
-        requestOptions
-      );
-      const parsed = await response.text();
-      const checked = JSON.parse(parsed);
-      dispatch(fnOK(checked.data));
-    } catch (error) {
-      if (error) console.log(error);
-      // FNERR();
+      }
+    );
+    const parsed = await response.text();
+    const data = JSON.parse(parsed);
+    if (data.status === "error") {
+      return rejectWithValue(data.message);
     }
-  };
-};
+    return data.data;
+  }
+);
+
+export const saveTodo = createAsyncThunk(
+  "todos/saveTodo",
+  async (txt, {rejectWithValue}) => {
+    const formdata = new FormData();
+    formdata.append("task", txt);
+    formdata.append("is_completed", 0);
+
+    const requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+    const response = await fetch(
+      "https://react.massivepixel.io/api/kloda.dariusz",
+      requestOptions
+    );
+    const parsed = await response.text();
+    const data = JSON.parse(parsed);
+    if (data.status === "error") {
+      return rejectWithValue(data.message);
+    }
+    return data.data[0];
+  }
+);
+
+export const markCompleteTodo = createAsyncThunk(
+  "todos/markComplete",
+  async (dataSet, {rejectWithValue}) => {
+    var formdata = new FormData();
+    formdata.append("id", dataSet[0]);
+    formdata.append("task", dataSet[1]);
+    formdata.append("is_completed", dataSet[2]);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+    const response = await fetch(
+      "https://react.massivepixel.io/api/kloda.dariusz",
+      requestOptions
+    );
+    const parsed = await response.text();
+    const data = JSON.parse(parsed);
+    if (data.status === "error") {
+      return rejectWithValue(data.message);
+    }
+
+    return {
+      id: data.data[0].id,
+      is_completed: data.data[0].is_completed,
+    };
+  }
+);
+
+export const updateTodo = createAsyncThunk(
+  "todos/updateTodo",
+  async (dataSet, {rejectWithValue}) => {
+    var formdata = new FormData();
+    formdata.append("id", dataSet[0]);
+    formdata.append("task", dataSet[1]);
+    formdata.append("is_completed", dataSet[2]);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+    const response = await fetch(
+      `https://react.massivepixel.io/api/kloda.dariusz/${dataSet[0]}`,
+      requestOptions
+    );
+    const parsed = await response.text();
+    const data = JSON.parse(parsed);
+    if (data.status === "error") {
+      return rejectWithValue(data.message);
+    }
+    return {
+      id: data.data[0].id,
+      task: data.data[0].task,
+    };
+  }
+);
+
+export const deleteTodo = createAsyncThunk(
+  "todos/deleteTodo",
+  async (id, {rejectWithValue}) => {
+    var formdata = new FormData();
+    formdata.append("id", id);
+    var requestOptions = {
+      method: "DELETE",
+      body: formdata,
+      redirect: "follow",
+    };
+    const response = await fetch(
+      `https://react.massivepixel.io/api/kloda.dariusz/${id}`,
+      requestOptions
+    );
+    const parsed = await response.text();
+    const data = JSON.parse(parsed);
+    if (data.status === "error") {
+      return rejectWithValue(data.message);
+    }
+
+    return data.data.id;
+  }
+);

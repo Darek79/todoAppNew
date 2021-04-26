@@ -5,7 +5,8 @@ import {
 import {useEffect} from "react";
 import TodoItem from "./../TodoItem/TodoItem";
 import AddItem from "./../AddItem/AddItem";
-import {fetchTodos} from "./../../Redux/Slices/todoSlices";
+import {Spinner} from "./../SVG/Spinner";
+import {fetchTodos} from "./../../Redux/Actions/appActions";
 import "./todomain.scss";
 export default function TodoMain() {
   const {todos, loading} = useSelector(
@@ -21,16 +22,19 @@ export default function TodoMain() {
   return (
     <section className='todo_main'>
       <AddItem />
-      {console.log(todos, "main")}
       <div className='todo_main_item_wrapper'>
-        {/* {todos.length > 0 &&
+        {!loading ? (
           todos.map((el, i) => (
             <TodoItem
               key={el.id}
               id={el.id}
               txt={el.task}
+              state={el.is_completed}
             />
-          ))} */}
+          ))
+        ) : (
+          <Spinner />
+        )}
       </div>
     </section>
   );
